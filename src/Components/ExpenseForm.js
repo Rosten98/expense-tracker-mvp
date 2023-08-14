@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
 
 function ExpenseForm() {
   const [category, setCategory] = useState('')
