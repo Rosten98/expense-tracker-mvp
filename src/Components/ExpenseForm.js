@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { addExpenseDoc, readExpenseDoc } from '../api/FirebaseAPI'
+import React, { useState } from 'react'
 
-function ExpenseForm() {
+function ExpenseForm( {addExpense}) {
   const [category, setCategory] = useState('')
   const [newCategory, setNewCategory] = useState('')
   const [description, setDescription] = useState('')
@@ -32,11 +31,8 @@ function ExpenseForm() {
       price: price,
       category: category === "Otro" ? newCategory : category
     }
-    console.log(newExpense)
-    // setExpenses([...expenses, newExpense])
-    addExpenseDoc(newExpense).then(
-      console.log("Expense has been added")
-    )
+    
+    addExpense(newExpense)
   }
 
   return (
@@ -99,46 +95,7 @@ function ExpenseForm() {
           <button type="submit" className="btn btn-primary mt-4">Submit</button>
         </fieldset>
       </form>
-      <ExpensesTable/>
     </>
-  )
-}
-
-function ExpensesTable() {
-  const [expenses, setExpenses] = useState([])
-  useEffect(() => {
-    readExpenseDoc().then( response => {
-      let queryExpenses = []
-      response.forEach((doc) => {
-        console.log(`Hi from expense\n ${doc.data()}`);
-        queryExpenses.push(doc.data())
-      });
-      setExpenses(queryExpenses);
-    })
-  }, [])
-  console.log(expenses)
-  
-  return(
-    <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">Descripcion</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Categoria</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          expenses.map(expense => (
-            <tr key={expense.description}>
-              <td>{expense.description}</td>
-              <td>{expense.price}</td>
-              <td>{expense.category}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
   )
 }
 
